@@ -5,17 +5,18 @@
 方法論採用資料科學跨產業標準化的流程 **CRISP-DM 流程**，完整涵蓋 **業務理解 → 資料理解 → 資料準備 → 建模 → 評估 → 部署/產出**。  
 
 
-hotel-conversion-prediction/
-│── main.py                 # 主程式（ETL + 訓練 + 推論）
-│── app.py                  # Streamlit 介面 (選配)
-│── requirements.txt        # 套件需求
-│── artifacts/              # 中間產物 (清洗後資料、圖表、submission)
-│   ├── preview_train_before.csv
-│   ├── preview_train_after.csv
-│   ├── feature_importance_rf.png
-│   └── submission_rf.csv
-│── README.md               # 專案文件
+## 📂 專案架構
 
+hotel-conversion-prediction/
+│── main.py # 主程式 (ETL + 訓練 + 推論)
+│── app.py # Streamlit 介面 (選配)
+│── requirements.txt # 套件需求
+│── artifacts/ # 中間產物 (清洗後資料、圖表、submission)
+│ ├── preview_train_before.csv
+│ ├── preview_train_after.csv
+│ ├── feature_importance_rf.png
+│ └── submission_rf.csv
+│── README.md # 專案文件
 ---
 
 ##  CRISP-DM 流程
