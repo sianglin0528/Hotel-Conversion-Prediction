@@ -35,7 +35,7 @@ hotel-conversion-prediction/
 ---
 
 ### 2. Data Understanding（資料理解）
-- **來源**：Google Analytics-like 流量資料  
+- **來源**：Google Analytics 流量資料  
 - **資料集規模**：  
   - Train：8100 筆 × 19 欄  
   - Test：900 筆 × 18 欄  
