@@ -10,7 +10,7 @@
 ```
 hotel-conversion-prediction/
 │── main.py # 主程式 (ETL + 訓練 + 推論)
-│── app.py # Streamlit 介面 (選配)
+│── app.py # Streamlit 介面 (最終優化使用)
 │── requirements.txt # 套件需求
 │── artifacts/ # 中間產物 (清洗後資料、圖表、submission)
 │ ├── preview_train_before.csv
