@@ -12,12 +12,3 @@ __pycache__/
 artifacts/*.png
 artifacts/*.csv
 !artifacts/submission_*.csv
-
-# Jupyter (如果有)
-.ipynb_checkpoints/
-
-
-echo "artifacts/*.png
-artifacts/*.csv
-!artifacts/metrics_bar.png
-!artifacts/metrics_from_confusion.csv"
