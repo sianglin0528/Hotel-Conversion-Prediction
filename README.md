@@ -4,6 +4,18 @@
 本專案利用網站流量資料（Google Analytics），預測訪客是否會訂房 (`Revenue`)。由於行銷預算有限，必須鎖定較可能轉換的訪客，以降低行銷成本並提升投資報酬率。
 方法論採用資料科學跨產業標準化的流程 **CRISP-DM 流程**，完整涵蓋 **業務理解 → 資料理解 → 資料準備 → 建模 → 評估 → 部署/產出**。  
 
+
+hotel-conversion-prediction/
+│── main.py                 # 主程式（ETL + 訓練 + 推論）
+│── app.py                  # Streamlit 介面 (選配)
+│── requirements.txt        # 套件需求
+│── artifacts/              # 中間產物 (清洗後資料、圖表、submission)
+│   ├── preview_train_before.csv
+│   ├── preview_train_after.csv
+│   ├── feature_importance_rf.png
+│   └── submission_rf.csv
+│── README.md               # 專案文件
+
 ---
 
 ##  CRISP-DM 流程
