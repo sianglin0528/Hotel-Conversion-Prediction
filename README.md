@@ -1,4 +1,4 @@
-#  📌Hotel Conversion Prediction
+#  Hotel Conversion Prediction
 
 ##  專案簡介
 本專案以 網站流量資料 (Google Analytics) 為基礎，建立一個 訪客轉換率預測模型，判斷訪客是否會完成訂房 (Revenue)。
@@ -6,7 +6,7 @@
 方法論採用 CRISP-DM 流程，涵蓋 ETL → 建模 → 評估 → 部署，完整展示資料科學專案生命週期。
 
 
-## 📂 專案架構
+##  專案架構
 ```
 hotel-conversion-prediction/
 │── main.py # 主程式 (ETL + 訓練 + 推論)
