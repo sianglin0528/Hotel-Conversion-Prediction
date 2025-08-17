@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# OS / IDE
+.DS_Store
+.vscode/
+
+# Artifacts (保留提交檔，其他可忽略)
+artifacts/*.png
+artifacts/*.csv
+!artifacts/submission_*.csv
+
+# Jupyter (如果有)
+.ipynb_checkpoints/
