@@ -228,13 +228,13 @@ score_tbl = pd.DataFrame([
 show_df(score_tbl)
 
 # Feature importance / coefficients
-st.subheader("🔎 特徵重要性 / 係數")
+st.subheader(" 特徵重要性 / 係數")
 plot_feature_importance(models[model_choice], feature_cols, title=f"Top Feature Importance ({model_choice})", top_n=20)
 
 # -----------------------
 # Inference on Uploaded Test
 # -----------------------
-st.subheader("🧪 上傳測試檔預測")
+st.subheader(" 上傳測試檔預測")
 if uploaded is not None:
     try:
         test_df_raw = pd.read_csv(uploaded)
