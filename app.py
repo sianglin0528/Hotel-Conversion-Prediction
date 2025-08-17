@@ -176,7 +176,7 @@ def threshold_report(y_true, proba, thr: float):
 # Sidebar — Controls
 # -----------------------
 with st.sidebar:
-    st.header("⚙️ 設定")
+    st.header(" 設定")
     st.caption("訓練資料：自動偵測 `artifacts/train_clean.csv` → 若無則使用 `train.csv`（內部 dropna）")
     model_choice = st.selectbox("模型", ["RandomForest", "LogisticRegression"], index=0)
     thr = st.slider("Decision Threshold (預設 0.5)", min_value=0.05, max_value=0.95, value=0.50, step=0.01)
