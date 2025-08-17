@@ -160,13 +160,9 @@ hotel-conversion-prediction/
 
 ## Demo
 
-專案已部署於 Streamlit Cloud，點擊即可操作：  
-[Hotel Conversion Prediction - Streamlit App](https://hotel-revenu.streamlit.app/)
+專案已部署於 Streamlit Cloud，點擊即可操作：  [Hotel Conversion Prediction - Streamlit App](https://hotel-revenu.streamlit.app/)
 
 ### 功能特色
 - 上傳 CSV 測試資料 → 即時清洗 + 預測  
 - 切換模型：Logistic Regression / Random Forest  
-- 視覺化輸出：ROC Curve、Feature Importance、Confusion Matrix  
-- 自動輸出 `submission.csv`，模擬 Kaggle 專案提交流程
-
 
