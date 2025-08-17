@@ -270,104 +270,82 @@ plot_top_importances(
     title="Top Feature Importance (Logistic Regression)"
 )
 
-# --- metrics_from_confusion.py (放進你的 main.py 任一段即可執行) ---
+# =========================
+# 末尾附錄：計算過程說明 + 指標比較圖（白底）
+# 直接貼在 main.py 最底下即可使用；依賴全域的 CONF（兩個模型的 TP/FP/FN/TN）
+# =========================
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# ========= 1) 輸入：四個數字（TP, FP, FN, TN） =========
-CONF = {
-    "Model A": {"TP": 853, "FP": 341, "FN": 576, "TN": 7230},
-    "Model B": {"TP": 846, "FP": 316, "FN": 583, "TN": 7255},
-}
+def _cm_safe_div(a, b):
+    return a / b if b else 0.0
 
-# ========= 2) 小工具：由混淆矩陣計算多種指標 =========
-def calc_metrics(TP, FP, FN, TN):
-    total = TP + FP + FN + TN
-    def safe_div(a, b): 
-        return a / b if b != 0 else 0.0
-
-    accuracy     = safe_div(TP + TN, total)
-    precision    = safe_div(TP, TP + FP)
-    recall       = safe_div(TP, TP + FN)
-    specificity  = safe_div(TN, TN + FP)
-    f1           = safe_div(2 * precision * recall, precision + recall)
-    fpr          = safe_div(FP, FP + TN)
-    fnr          = safe_div(FN, FN + TP)
-    balanced_acc = (recall + specificity) / 2
-
+def _cm_metrics(TP, FP, FN, TN):
+    total       = TP + FP + FN + TN
+    accuracy    = _cm_safe_div(TP + TN, total)
+    precision   = _cm_safe_div(TP, TP + FP)
+    recall      = _cm_safe_div(TP, TP + FN)
+    specificity = _cm_safe_div(TN, TN + FP)
+    f1          = _cm_safe_div(2 * precision * recall, precision + recall)
     return {
         "Accuracy": accuracy,
         "Precision": precision,
         "Recall": recall,
         "F1": f1,
         "Specificity": specificity,
-        "FPR": fpr,
-        "FNR": fnr,
-        "BalancedAcc": balanced_acc,
         "TP": TP, "FP": FP, "FN": FN, "TN": TN, "Total": total
     }
 
+def _print_explain(name, C):
+    TP, FP, FN, TN = C["TP"], C["FP"], C["FN"], C["TN"]
+    total = TP + FP + FN + TN
+    print(f"\n— 計算過程｜{name} —")
+    print(f"Accuracy  = (TP+TN)/(TP+FP+FN+TN) = ({TP}+{TN})/({TP}+{FP}+{FN}+{TN}) = {(TP+TN)}/{total} = {_cm_safe_div(TP+TN, total):.3f}")
+    print(f"Precision = TP/(TP+FP)            = {TP}/({TP}+{FP}) = {_cm_safe_div(TP, TP+FP):.3f}")
+    print(f"Recall    = TP/(TP+FN)            = {TP}/({TP}+{FN}) = {_cm_safe_div(TP, TP+FN):.3f}")
+    print(f"F1        = 2PR/(P+R)             = 2×{_cm_safe_div(TP, TP+FP):.3f}×{_cm_safe_div(TP, TP+FN):.3f}/({_cm_safe_div(TP, TP+FP):.3f}+{_cm_safe_div(TP, TP+FN):.3f}) = {_cm_safe_div(2*_cm_safe_div(TP, TP+FP)*_cm_safe_div(TP, TP+FN), _cm_safe_div(TP, TP+FP)+_cm_safe_div(TP, TP+FN)):.3f}")
+    print(f"Specificity = TN/(TN+FP)          = {TN}/({TN}+{FP}) = {_cm_safe_div(TN, TN+FP):.3f}")
 
-# ========= 3) 彙整成表格 =========
-rows = []
-for name, c in CONF.items():
-    rows.append({"Model": name, **calc_metrics(**c)})
-df = pd.DataFrame(rows).set_index("Model")
+# 1) 建表 + 列印逐步公式
+try:
+    _CONF_SRC = CONF  # 期待上方已定義 CONF
+except NameError:
+    _CONF_SRC = {
+        "Model A": {"TP": 853, "FP": 341, "FN": 576, "TN": 7230},
+        "Model B": {"TP": 846, "FP": 316, "FN": 583, "TN": 7255},
+    }
 
-# 小數點格式友善輸出
-display_cols = ["TP","FP","FN","TN","Total","Accuracy","Precision","Recall","F1","Specificity","FPR","FNR","BalancedAcc"]
-print("\n=== Metrics from Confusion Matrix ===")
-print(df[display_cols].round(3))
+_rows = []
+for _name, _c in _CONF_SRC.items():
+    _C = {k.upper(): v for k, v in _c.items()}
+    _print_explain(_name, _C)
+    _rows.append({"Model": _name, **_cm_metrics(**_C)})
 
-# ========= 4) 輸出 CSV 與 圖檔 =========
-ART = Path("artifacts"); ART.mkdir(exist_ok=True)
-df.round(6).to_csv(ART / "metrics_from_confusion.csv")
+_metrics_df = pd.DataFrame(_rows).set_index("Model")
+print("\n=== 指標總表 ===")
+print(_metrics_df[["TP","FP","FN","TN","Total","Accuracy","Precision","Recall","F1","Specificity"]].round(3))
 
-# 4.1 指標比較長條圖（Accuracy/Precision/Recall/F1/Specificity）
-plot_cols = ["Accuracy","Precision","Recall","F1","Specificity"]
-ax = df[plot_cols].plot(kind="bar", figsize=(9,5))
-ax.set_title("Model Metrics Comparison (from Confusion Matrix)")
-ax.set_ylabel("Score")
-ax.set_ylim(0, 1.0)
+# 2) 產生白底比較圖（Accuracy / Precision / Recall / F1 / Specificity）
+_ART = Path("artifacts"); _ART.mkdir(exist_ok=True)
+plt.style.use("default")
+plt.rcParams["figure.facecolor"]  = "white"
+plt.rcParams["axes.facecolor"]    = "white"
+plt.rcParams["savefig.facecolor"] = "white"
+plt.rcParams["font.sans-serif"]   = ["PingFang TC", "Noto Sans CJK TC", "Heiti TC", "Arial", "DejaVu Sans"]
+plt.rcParams["axes.unicode_minus"] = False
+
+_cols = ["Accuracy","Precision","Recall","F1","Specificity"]
+ax = _metrics_df[_cols].plot(kind="bar", figsize=(9.5, 5.2))
+ax.set_title("模型指標比較", fontsize=16)
+ax.set_ylabel("分數"); ax.set_ylim(0, 1.0); ax.grid(axis="y", color="#eeeeee")
 for p in ax.patches:
-    ax.annotate(f"{p.get_height():.3f}", (p.get_x()+p.get_width()/2, p.get_height()),
-                ha='center', va='bottom', fontsize=8, rotation=0, xytext=(0,3), textcoords="offset points")
+    h = p.get_height()
+    ax.annotate(f"{h:.3f}", (p.get_x()+p.get_width()/2, h),
+                ha="center", va="bottom", fontsize=9,
+                xytext=(0,3), textcoords="offset points")
 plt.tight_layout()
-plt.savefig(ART / "metrics_bar.png", dpi=150)
+_out = _ART / "metrics_bar_compare.png"
+plt.savefig(_out, dpi=170)
 plt.close()
-
-# 4.2 各模型混淆矩陣熱圖（不使用 seaborn）
-# 4.2 各模型混淆矩陣熱圖（不使用 seaborn）
-def save_cm_image(TP, FP, FN, TN, title, path):
-    import numpy as np
-    # 行=Actual [Positive, Negative]；列=Predicted [Positive, Negative]
-    cm = np.array([[TP, FN],
-                   [FP, TN]])
-
-    fig, ax = plt.subplots(figsize=(4.2, 3.8))
-    im = ax.imshow(cm, aspect="auto")
-    ax.set_title(title)
-    ax.set_xlabel("Predicted")
-    ax.set_ylabel("Actual")
-    ax.set_xticks([0, 1]); ax.set_xticklabels(["Positive", "Negative"])
-    ax.set_yticks([0, 1]); ax.set_yticklabels(["Positive", "Negative"])
-
-    vmax = cm.max()
-    for i in range(cm.shape[0]):
-        for j in range(cm.shape[1]):
-            val = cm[i, j]
-            ax.text(j, i, f"{val}", ha="center", va="center",
-                    color="white" if val > vmax/2 else "black")
-    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
-    plt.tight_layout()
-    plt.savefig(path, dpi=150)
-    plt.close()
-
-
-save_cm_image(**CONF["Model A"], title="Confusion Matrix — Model A", path=ART / "cm_modelA.png")
-save_cm_image(**CONF["Model B"], title="Confusion Matrix — Model B", path=ART / "cm_modelB.png")
-
-print(f"\nSaved:\n- {ART/'metrics_from_confusion.csv'}\n- {ART/'metrics_bar.png'}\n- {ART/'cm_modelA.png'}\n- {ART/'cm_modelB.png'}")
-
-
+print(f"\n[Saved] 指標比較圖：{_out}")
