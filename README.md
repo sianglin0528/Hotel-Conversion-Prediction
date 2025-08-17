@@ -1,4 +1,4 @@
-#  Hotel Conversion Prediction
+#  📌Hotel Conversion Prediction
 
 ##  專案簡介
 本專案利用網站流量資料（Google Analytics），預測訪客是否會訂房 (`Revenue`)。由於行銷預算有限，必須鎖定較可能轉換的訪客，以降低行銷成本並提升投資報酬率。
