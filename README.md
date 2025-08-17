@@ -6,7 +6,7 @@
 
 
 ## 📂 專案架構
-
+```
 hotel-conversion-prediction/
 │── main.py # 主程式 (ETL + 訓練 + 推論)
 │── app.py # Streamlit 介面 (選配)
@@ -17,6 +17,8 @@ hotel-conversion-prediction/
 │ ├── feature_importance_rf.png
 │ └── submission_rf.csv
 │── README.md # 專案文件
+
+```
 ---
 
 ##  CRISP-DM 流程
