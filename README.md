@@ -1,8 +1,9 @@
 #  📌Hotel Conversion Prediction
 
 ##  專案簡介
-本專案利用網站流量資料（Google Analytics），預測訪客是否會訂房 (`Revenue`)。由於行銷預算有限，必須鎖定較可能轉換的訪客，以降低行銷成本並提升投資報酬率。
-方法論採用資料科學跨產業標準化的流程 **CRISP-DM 流程**，完整涵蓋 **業務理解 → 資料理解 → 資料準備 → 建模 → 評估 → 部署/產出**。  
+本專案以 網站流量資料 (Google Analytics) 為基礎，建立一個 訪客轉換率預測模型，判斷訪客是否會完成訂房 (Revenue)。
+由於飯店行銷資源有限，必須精準鎖定高轉換率客群，以降低 CAC (Customer Acquisition Cost) 並提升 ROI (Return on Investment)。
+方法論採用 CRISP-DM 流程，涵蓋 ETL → 建模 → 評估 → 部署，完整展示資料科學專案生命週期。
 
 
 ## 📂 專案架構
