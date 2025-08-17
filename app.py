@@ -214,7 +214,7 @@ c4.metric("Model AUC (LR)", f"{val_metrics['LogisticRegression']['roc_auc']:.3f}
 st.caption("Train Rows 來源：" + ("artifacts/train_clean.csv" if clean_df is not None else "由 app 以 dropna() 清理自 train.csv"))
 
 # 顯示驗證成績表
-st.subheader("📊 驗證成績（Hold-out 8:2）")
+st.subheader(" 驗證成績（Hold-out 8:2）")
 score_tbl = pd.DataFrame([
     {"model": "RandomForest", "roc_auc": val_metrics["RandomForest"]["roc_auc"],
      "precision_pos": val_metrics["RandomForest"]["precision_pos"],
