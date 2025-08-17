@@ -8,3 +8,7 @@ __pycache__/
 .DS_Store
 .vscode/
 
+# Artifacts (保留提交檔，其他可忽略)
+artifacts/*.png
+artifacts/*.csv
+!artifacts/submission_*.csv
